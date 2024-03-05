@@ -32,7 +32,7 @@ $lang = [
         "username"  => "Username",
         "password"  => "Password",
         "captcha"   => "Captcha",
-        "cookies"   => "Stay logged in (THIS USES COOKIES!)"
+        "cookies"   => "Stay logged in"
     ],
     "signup" => [
         "password" => "Repeat Password",

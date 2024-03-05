@@ -13,24 +13,17 @@ $date =  date('Y-m-d h:i:s');
 $error = false;
 $error_msg = "";
 
-if(isset($_GET["username"]) && isset($_GET["password"]) && isset($_GET["password2"]) && isset($_GET["invite"])) {
+if(isset($_GET["username"]) && isset($_GET["password"]) && isset($_GET["password2"])) {
     //if(isset($_GET['captcha_challenge']) && $_GET['captcha_challenge'] == $_SESSION['captcha_text']) {
         $username = mysqli_real_escape_string($conn, $_GET["username"]);
         $password1 = mysqli_real_escape_string($conn, $_GET["password"]);
         $password2 = mysqli_real_escape_string($conn, $_GET["password2"]);
-        $invite = mysqli_real_escape_string($conn, $_GET["invite"]);
         $check1 = preg_match('/[^.a-zA-Z0-9-_]/', $username);
         $check2 = preg_match('/[^.a-zA-Z0-9-_]/', $password1);
         $check3 = preg_match('/[^.a-zA-Z0-9-_]/', $password2);
-        $invitecheck = $conn->query("SELECT * FROM `invites` WHERE `token`='$invite' LIMIT 1");
         $usercheck = $conn->query("SELECT * FROM `user` WHERE `username`='$username' LIMIT 1");
         
         // Executing all the checks
-        
-        if(empty($invite)) {
-            $error = true;
-            $error_msg = $lang["errors"]["empty_invite"];
-        }
         if($check3==true) {
             $error = true;
             $error_msg = $lang["errors"]["bad_password"];
@@ -42,13 +35,6 @@ if(isset($_GET["username"]) && isset($_GET["password"]) && isset($_GET["password
         if($check1==true) {
             $error = true;
             $error_msg = $lang["errors"]["bad_username"];
-        }
-        if(mysqli_num_rows($invitecheck)==1) {
-            $inv = mysqli_fetch_assoc($invitecheck);
-            if(!empty($inv["used"])) {
-                $error = true;
-                $error_msg = $lang["errors"]["used_invite"];
-            }
         }
         if(mysqli_num_rows($usercheck)==1) {
             $error = true;
@@ -64,8 +50,7 @@ if(isset($_GET["username"]) && isset($_GET["password"]) && isset($_GET["password
         if($error==false) {
             // Everything is right!
             $password = password_hash($password1, PASSWORD_BCRYPT);
-            $conn->query("UPDATE `invites` SET `used`='$date' WHERE `token`='$invite'");
-            $conn->query("INSERT INTO `user`(`username`,`password`) VALUES('$username','$password')");
+            $conn->query("INSERT INTO `user`(`username`,`password`,`active`) VALUES('$username','$password','0')");
             header("Location: ./login");
         }
         
@@ -110,10 +95,6 @@ include("../parts/header.php");
             <input tabindex="3" type="password" name="password2" id="login_password2" class="form-control" placeholder="<?= $lang["signup"]["password"] ?>" maxlength="50">
         </div>
 
-        <div class="form-group">
-            <label for="login_invite" class="sr-only"><?= $lang["signup"]["invite"] ?></label>
-            <input tabindex="4" type="text" name="invite" id="login_invite" class="form-control" placeholder="<?= $lang["signup"]["invite"] ?>" maxlength="50">
-        </div>
 
 <!--
         <div class="form-group">

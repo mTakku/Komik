@@ -30,14 +30,6 @@
                     <li class="<?php if($page==$lang["menu"]["bookmarks"]) { echo "active"; } ?>" id="titles">
                         <a href="<?php echo $config["url"]; ?>bookmarks"><?= glyph("bookmark",$lang["menu"]["bookmarks"]) ?> <?= $lang["menu"]["bookmarks"] ?></a>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <?= glyph("info-sign",$lang["menu"]["more"]) ?> <span class="nav-label-1440"><?= $lang["menu"]["more"] ?></span> <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="<?php if($page==$lang["menu"]["about"]) { echo "active"; } ?>" id="about">
-                                <a href="<?= $config["url"] ?>about"><?= glyph("question-sign",$lang["menu"]["about"]) ?> <?= $lang["menu"]["about"] ?></a>
-                            </li>
                         </ul>
                     </li>
                 </ul>
