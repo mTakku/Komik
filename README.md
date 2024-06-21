@@ -1,3 +1,3 @@
 Project komik pake php
 
-baik
+baik dan keren
